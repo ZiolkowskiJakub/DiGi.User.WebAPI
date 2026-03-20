@@ -416,6 +416,3 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
-
-# User specific files
-[Uu]ser [Ff]iles/
