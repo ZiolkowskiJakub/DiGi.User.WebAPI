@@ -6,3 +6,4 @@
 | :--- | :--- |
 | [DiGi\.User\.WebAPI](DiGi.User.WebAPI.md 'DiGi\.User\.WebAPI') | |
 | [DiGi\.User\.WebAPI\.Classes](DiGi.User.WebAPI.Classes.md 'DiGi\.User\.WebAPI\.Classes') | |
+| [DiGi\.User\.WebAPI\.Constants](DiGi.User.WebAPI.Constants.md 'DiGi\.User\.WebAPI\.Constants') | |
