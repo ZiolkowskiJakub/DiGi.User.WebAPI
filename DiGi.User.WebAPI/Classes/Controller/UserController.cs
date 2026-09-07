@@ -1,5 +1,6 @@
 using DiGi.User.Classes;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -35,8 +36,11 @@ namespace DiGi.User.WebAPI.Classes
         /// Retrieves secure data that requires authorization.
         /// </summary>
         /// <returns>An <see cref="IActionResult"/> containing the protected data or an authorization error.</returns>
-        [HttpGet("secure-data")]
+        [HttpGet("secure-data", Name = $"{nameof(UserController)}_{nameof(GetProtectedData)}")]
+        [ApiExplorerSettings(IgnoreApi = false)]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult GetProtectedData()
         {
             // Accessing the email from the token claims
@@ -52,8 +56,12 @@ namespace DiGi.User.WebAPI.Classes
         /// </summary>
         /// <param name="userLogin">The login credentials of the user.</param>
         /// <returns>An <see cref="IActionResult"/> containing the generated token upon success, or an unauthorized result.</returns>
-        [HttpPost("login")]
+        [HttpPost("login", Name = $"{nameof(UserController)}_{nameof(Login)}")]
+        [ApiExplorerSettings(IgnoreApi = false)]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Login([FromBody] UserLogin userLogin)
         {
             // Here you would use your DLL and Npgsql to check if user exists in PostgreSQL
@@ -75,8 +83,11 @@ namespace DiGi.User.WebAPI.Classes
         /// Introspects the current session, returning the identity and token metadata of the presented token.
         /// </summary>
         /// <returns>An <see cref="IActionResult"/> containing the session information, or an authorization error.</returns>
-        [HttpGet("session")]
+        [HttpGet("session", Name = $"{nameof(UserController)}_{nameof(GetSession)}")]
+        [ApiExplorerSettings(IgnoreApi = false)]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult GetSession()
         {
             JwtSecurityToken? jwtSecurityToken = ReadPresentedToken();
@@ -98,8 +109,12 @@ namespace DiGi.User.WebAPI.Classes
         /// Issues a new token for the identity of the presented token, starting an independent session; the presented token remains valid until its own expiration.
         /// </summary>
         /// <returns>An <see cref="IActionResult"/> containing the new token, or an authorization error.</returns>
-        [HttpPost("session/refresh")]
+        [HttpPost("session/refresh", Name = $"{nameof(UserController)}_{nameof(Refresh)}")]
+        [ApiExplorerSettings(IgnoreApi = false)]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Refresh()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
@@ -121,8 +136,12 @@ namespace DiGi.User.WebAPI.Classes
         /// Terminates the current session by revoking the presented token until its natural expiration; every subsequent request carrying it is rejected.
         /// </summary>
         /// <returns>An <see cref="IActionResult"/> confirming the revocation, a bad request when the token cannot be revoked, or an authorization error.</returns>
-        [HttpPost("logout")]
+        [HttpPost("logout", Name = $"{nameof(UserController)}_{nameof(Logout)}")]
+        [ApiExplorerSettings(IgnoreApi = false)]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Logout()
         {
             string? jti = User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
