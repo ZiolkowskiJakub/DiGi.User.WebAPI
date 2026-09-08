@@ -1,4 +1,5 @@
 using DiGi.User.Classes;
+using DiGi.User.PostgreSQL;
 using DiGi.User.PostgreSQL.Classes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
