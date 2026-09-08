@@ -15,7 +15,7 @@ namespace DiGi.User.WebAPI.Classes
     /// Controller responsible for handling user-related operations, including authentication, session lifecycle and access to protected data.
     /// </summary>
     [ApiController]
-    [Route("user/[controller]")]
+    [Route("[controller]")]
     public class UserController : DiGi.WebAPI.Classes.WebAPIController
     {
         private readonly DiGi.WebAPI.Classes.SecurityKeyManager securityKeyManager;
