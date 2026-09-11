@@ -44,14 +44,14 @@ namespace DiGi.User.WebAPI.Classes
         /// <summary>
         /// Retrieves the stored record of the authenticated user.
         /// <para>The record is read for the email carried by the presented token, so a caller can only ever read itself.
-        /// The credential columns are not part of the <see cref="DiGi.User.Classes.User"/> payload and are never returned.</para>
+        /// The credential columns are not part of the <see cref="User.Classes.User"/> payload and are never returned.</para>
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An <see cref="IActionResult"/> containing the stored user, a not found result, or an authorization error.</returns>
         [HttpGet("secure-data", Name = $"{nameof(UserController)}_{nameof(GetProtectedDataAsync)}")]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Authorize]
-        [ProducesResponseType(typeof(DiGi.User.Classes.User), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(User.Classes.User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -72,7 +72,7 @@ namespace DiGi.User.WebAPI.Classes
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            DiGi.User.Classes.User? user = await userPostgreSQLConverter.GetUserByEmailAsync(userEmail, cancellationToken: cancellationToken);
+            User.Classes.User? user = await userPostgreSQLConverter.GetUserByEmailAsync(userEmail, cancellationToken: cancellationToken);
 
             string? json = Core.Convert.ToSystem_String(user);
             if (string.IsNullOrWhiteSpace(json))
